@@ -1,5 +1,4 @@
 import streamlit as st
-import plotly.graph_objects as go
 import pandas as pd
 import yfinance as yf
 
@@ -12,17 +11,11 @@ data = {
     'Value': [None] * 31  
 }
 
-# st.write(len(data['Country']))  # Should print 30
-# st.write(len(data['Index']))    # Should print 30
-# st.write(len(data['Latitude'])) # Should print 30
-# st.write(len(data['Longitude'])) # Should print 30
-# st.write(len(data['Value']))    # Should print 30
-
 # Convert to DataFrame
 df = pd.DataFrame(data)
 
 # Function to fetch stock index values
-@st.cache(ttl=60)  # Cache for 1 minute
+@st.cache_data(ttl=60)  # Cache for 1 minute
 def fetch_index_values(tickers):
     values = []
     for ticker in tickers:
@@ -38,86 +31,13 @@ def fetch_index_values(tickers):
 # Fetch stock index values
 df['Value'] = fetch_index_values(df['Index'])
 
-# Plot map using Plotly
-st.title("Interactive Globe View of Stock Exchanges")
+# Prepare data for map
+map_data = df[['Latitude', 'Longitude']]
 
-# fig = go.Figure()
+# Display map using Streamlit's st.map
+st.title("Stock Exchanges Around the World")
+st.map(map_data)
 
-# fig.add_trace(go.Scattergeo(
-#     lon=df['Longitude'],
-#     lat=df['Latitude'],
-#     text=df['Country'],
-#     mode='text',
-#     hoverinfo='text',
-#     hovertext=df['Index'] + '<br>Value: ' + df['Value'].astype(str),
-#     textfont=dict(
-#         color='black',
-#         family='Arial',
-#         size=18,  # Increased font size
-#         weight='bold'  # Made font bold
-#     ),
-#     textposition='middle center'  # Adjusted text position
-# ))
-
-# # adding some padding or spacing between the text elements to prevent them from overlapping
-# text=df['Country'] + '<br><br>Index: ' + df['Index'] + '<br><br>Value: ' + df['Value'].astype(str)
-
-# # Set globe projection and layout settings
-# fig.update_geos(
-#     projection_type="orthographic",
-#     showland=True,
-#     landcolor="rgb(242, 242, 242)",
-#     showocean=True,
-#     oceancolor="rgb(204, 204, 255)",
-#     showcoastlines=True,
-#     coastlinecolor="rgb(102, 102, 102)",
-#     showlakes=True,
-#     lakecolor="rgb(255, 255, 255)",
-#     showcountries=True,
-#     countrycolor="rgb(204, 204, 204)"
-# )
-
-# fig.update_layout(
-#     title="Stock Exchanges Around the Globe",
-#     geo=dict(
-#         showland=True,
-#         landcolor="rgb(242, 242, 242)",
-#         showocean=True,
-#         oceancolor="rgb(204, 204, 255)",
-#         showcoastlines=True,
-#         coastlinecolor="rgb(102, 102, 102)",
-#         showlakes=True,
-#         lakecolor="rgb(255, 255, 255)",
-#         showcountries=True,
-#         countrycolor="rgb(204, 204, 204)"
-#     ),
-#     height=800,  # Adjust height as needed
-#     margin={"r":0,"t":0,"l":0,"b":0}  # Remove margins to make the map full-screen
-# )
-
-# # Display map
-# st.plotly_chart(fig, use_container_width=True)
-
-
-st.title("Interactive Map View of Stock Exchanges")
-
-st.map(
-    df,
-    zoom=1,  # Adjust zoom level as needed
-    use_container_width=True,
-)
-
-for index, row in df.iterrows():
-    st.markdown(f"""
-        <div style="position: absolute; top: {row['Latitude']}%; left: {row['Longitude']}%; font-size: 18px; font-weight: bold; color: black;">
-            {row['Country']}
-        </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-        <div style="position: absolute; top: {row['Latitude'] + 2}%; left: {row['Longitude']}%; font-size: 14px; color: black;">
-            Index: {row['Index']}<br>
-            Value: {row['Value']}
-        </div>
-    """, unsafe_allow_html=True)
-
+# Display DataFrame with additional information
+st.write("Stock Index Values:")
+st.dataframe(df[['Country', 'Index', 'Value']])
