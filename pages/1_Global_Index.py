@@ -1,6 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
+import yfinance as yf
 
 # Define the data
 data = {
@@ -42,11 +43,15 @@ fig = px.scatter_mapbox(
     size_max=15,
     zoom=1,
     title="Stock Exchanges Around the World",
-    color_discrete_sequence=["blue"],
+    color_discrete_sequence=["blue"]
 )
 
-fig.update_layout(mapbox_style="open-street-map")
+fig.update_layout(
+    mapbox_style="open-street-map",
+    height=800,  # Adjust height as needed
+    margin={"r":0,"t":0,"l":0,"b":0}  # Remove margins to make the map full-screen
+)
 fig.update_layout(mapbox=dict(accesstoken=mapbox_token))
 
-# Make map full-screen
-st.write(fig)
+# Display map
+st.plotly_chart(fig, use_container_width=True)
