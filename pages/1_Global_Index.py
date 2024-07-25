@@ -3,10 +3,10 @@ import plotly.graph_objects as go
 import pandas as pd
 import yfinance as yf
 
-# Define the data
+# Define the data with stock exchange indices
 data = {
     'Country': ['United States', 'China', 'Japan', 'Germany', 'United Kingdom'],
-    'Index': ['^GSPC', '000001.SS', '^N225', '^GDAXI', '^FTSE'],
+    'Index': ['^DJI', '000001.SS', '^N225', '^GDAXI', '^FTSE'],
     'Latitude': [37.7749, 39.9042, 35.6762, 51.1657, 51.509865],
     'Longitude': [-122.4194, 116.4074, 139.6503, 10.4515, -0.118092],
     'Value': [None] * 5  # Placeholder for index values
@@ -23,6 +23,7 @@ def fetch_index_values(tickers):
             current_value = ticker_data['Close'][-1]
             df.at[i, 'Value'] = current_value
         except Exception as e:
+            df.at[i, 'Value'] = 'N/A'
             print(f"Error fetching data for {ticker}: {e}")
 
 # Fetch stock index values
@@ -37,7 +38,7 @@ fig = go.Figure()
 fig.add_trace(go.Scattergeo(
     lon=df['Longitude'],
     lat=df['Latitude'],
-    text=df['Country'] + '<br>Index: ' + df['Index'] + '<br>Value: ' + df['Value'].astype(str),
+    text=df['Country'] + '<br>Index: ' + df['Index'] + '<br>Value: ' + df['Value'].astype(str) + '%',
     mode='markers+text',
     marker=dict(size=10, color='blue', opacity=0.8),
     textposition='top center'
