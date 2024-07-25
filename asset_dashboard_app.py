@@ -10,7 +10,7 @@ default_tickers = {
     "NASDAQ": "^IXIC",
     "S&P 500": "^GSPC",
     "Gold Futures": "GC=F",
-    "Oil Futures": "CL=F",
+    "Oil Futures": "BZ=F",
     "10 Year T Bond Yield": "^TNX"
 }
 
