@@ -27,7 +27,7 @@ def plot_ticker(ticker, label, interval, period, chart_type, up_color, down_colo
             high=data['High'],
             low=data['Low'],
             close=data['Close'],
-            name=label,
+            name=label if label else 'Candlestick',
             increasing_line_color=up_color,
             decreasing_line_color=down_color
         ))
@@ -36,7 +36,7 @@ def plot_ticker(ticker, label, interval, period, chart_type, up_color, down_colo
             x=data.index,
             y=data['Close'],
             mode='lines',
-            name=label
+            name=label if label else 'Line Chart'
         ))
 
     fig.add_trace(go.Bar(
@@ -47,7 +47,7 @@ def plot_ticker(ticker, label, interval, period, chart_type, up_color, down_colo
     ))
 
     fig.update_layout(
-        title=f"{label} Price Chart",
+        title=f"{label if label else 'Price Chart'}",
         xaxis_title="Date",
         yaxis_title="Price",
         yaxis=dict(domain=[0.2, 1]),
@@ -62,8 +62,8 @@ def plot_ticker(ticker, label, interval, period, chart_type, up_color, down_colo
 def get_current_price(ticker):
     ticker_data = yf.Ticker(ticker)
     todays_data = ticker_data.history(period='1d')
-    current_price = todays_data['Close'][0]
-    previous_close = todays_data['Open'][0]
+    current_price = todays_data['Close'].iloc[0]  # Using iloc to avoid FutureWarning
+    previous_close = todays_data['Open'].iloc[0]  # Using iloc to avoid FutureWarning
     change_percentage = ((current_price - previous_close) / previous_close) * 100
     return current_price, change_percentage
 
@@ -107,7 +107,7 @@ for label, ticker in default_tickers.items():
         change_color = "green" if change_percentage > 0 else "red"
 
         # Check if ticker starts with '^' and format price display accordingly
-        if label == "10 Year T Bond Yield":
+        if label == "10-Y T Bond Yield":
             price_display = f"{current_price:.2f}%"
         else:
             price_display = f"${current_price:.2f}"
