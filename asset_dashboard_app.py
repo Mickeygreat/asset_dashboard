@@ -12,7 +12,7 @@ default_tickers = {
     "S&P 500": "^GSPC",
     "Gold Futures": "GC=F",
     "Oil Futures": "BZ=F",
-    "10 Year T Bond Yield": "^TNX"
+    "10-Y T Bond Yield": "^TNX"
 }
 
 # Function to fetch and plot data
