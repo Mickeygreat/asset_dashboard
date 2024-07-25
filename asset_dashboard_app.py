@@ -101,12 +101,19 @@ else:
 cols = st.columns(2)
 index = 0
 
+# Set of labels for which to omit the dollar sign
+no_dollar_labels = {"Dow Jones", "Russell 2000", "NASDAQ", "S&P 500"}
+
 for label, ticker in default_tickers.items():
     with cols[index % 2]:
         current_price, change_percentage = get_current_price(ticker)
         change_color = "green" if change_percentage > 0 else "red"
 
-        st.markdown(f"### {label}: ${current_price:.2f}")
+        price_display = f"${current_price:.2f}"
+        if label in no_dollar_labels:
+            price_display = f"{current_price:.2f}"
+        
+        st.markdown(f"### {label}: {price_display}")
         st.markdown(
             f"### <span style='color:{change_color};'>({change_percentage:.2f}%)</span>", unsafe_allow_html=True)
 
