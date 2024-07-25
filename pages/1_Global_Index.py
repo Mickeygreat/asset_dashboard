@@ -1,5 +1,5 @@
 import streamlit as st
-import plotly.express as px
+import plotly.graph_objects as go
 import pandas as pd
 import yfinance as yf
 
@@ -29,29 +29,52 @@ def fetch_index_values(tickers):
 fetch_index_values(df['Index'])
 
 # Plot map using Plotly
-st.title("Interactive Global Stock Exchanges Map")
+st.title("Interactive Globe View of Stock Exchanges")
 
-# Mapbox token (replace with your own token)
-mapbox_token = 'your_mapbox_token_here'
+fig = go.Figure()
 
-fig = px.scatter_mapbox(
-    df,
-    lat='Latitude',
-    lon='Longitude',
-    hover_name='Country',
-    hover_data={'Index': True, 'Value': True},
-    size_max=15,
-    zoom=1,
-    title="Stock Exchanges Around the World",
-    color_discrete_sequence=["blue"]
+# Add scattergeo trace for the globe view
+fig.add_trace(go.Scattergeo(
+    lon=df['Longitude'],
+    lat=df['Latitude'],
+    text=df['Country'] + '<br>Index: ' + df['Index'] + '<br>Value: ' + df['Value'].astype(str),
+    mode='markers+text',
+    marker=dict(size=10, color='blue', opacity=0.8),
+    textposition='top center'
+))
+
+# Set globe projection and layout settings
+fig.update_geos(
+    projection_type="orthographic",
+    showland=True,
+    landcolor="rgb(242, 242, 242)",
+    showocean=True,
+    oceancolor="rgb(204, 204, 255)",
+    showcoastlines=True,
+    coastlinecolor="rgb(102, 102, 102)",
+    showlakes=True,
+    lakecolor="rgb(255, 255, 255)",
+    showcountries=True,
+    countrycolor="rgb(204, 204, 204)"
 )
 
 fig.update_layout(
-    mapbox_style="open-street-map",
+    title="Stock Exchanges Around the Globe",
+    geo=dict(
+        showland=True,
+        landcolor="rgb(242, 242, 242)",
+        showocean=True,
+        oceancolor="rgb(204, 204, 255)",
+        showcoastlines=True,
+        coastlinecolor="rgb(102, 102, 102)",
+        showlakes=True,
+        lakecolor="rgb(255, 255, 255)",
+        showcountries=True,
+        countrycolor="rgb(204, 204, 204)"
+    ),
     height=800,  # Adjust height as needed
     margin={"r":0,"t":0,"l":0,"b":0}  # Remove margins to make the map full-screen
 )
-fig.update_layout(mapbox=dict(accesstoken=mapbox_token))
 
 # Display map
 st.plotly_chart(fig, use_container_width=True)
