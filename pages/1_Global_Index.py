@@ -51,7 +51,7 @@ fig.add_trace(go.Scattergeo(
     mode='markers+text',
     marker=dict(size=10, color='blue', opacity=0.8),
     textposition='top center',
-    textfont=dict(color='white')  # Changed font color to white
+    textfont=dict(color='black')  # Changed font color to white
 ))
 
 # Set globe projection and layout settings
