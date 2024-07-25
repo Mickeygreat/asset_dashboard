@@ -87,7 +87,7 @@ period = st.selectbox(
 chart_type = st.radio(
     "Select chart type for all charts",
     options=["Candles", "Line"],
-    index=1  # Default to "Line" (index 1)
+    index=0  # Default to "Candles" (index 0)
 )
 
 # Candlestick color selectors
@@ -101,16 +101,14 @@ else:
 cols = st.columns(2)
 index = 0
 
-# Set of labels for which to omit the dollar sign
-no_dollar_labels = {"Dow Jones", "Russell 2000", "NASDAQ", "S&P 500"}
-
 for label, ticker in default_tickers.items():
     with cols[index % 2]:
         current_price, change_percentage = get_current_price(ticker)
         change_color = "green" if change_percentage > 0 else "red"
 
+        # Check if ticker starts with '^' and format price display accordingly
         price_display = f"${current_price:.2f}"
-        if label in no_dollar_labels:
+        if ticker.startswith('^'):
             price_display = f"{current_price:.2f}"
         
         st.markdown(f"### {label}: {price_display}")
