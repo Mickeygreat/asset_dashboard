@@ -97,10 +97,9 @@ for label, ticker in default_tickers.items():
         current_price, change_percentage = get_current_price(ticker)
         change_color = "green" if change_percentage > 0 else "red"
 
-        st.markdown(
-            f"### {label}: {current_price:.2f} <span style='color:{change_color};'>({change_percentage:.2f}%)</span>",
-            unsafe_allow_html=True
-        )
+        st.markdown(f"### {label}: {current_price:.2f}")
+        st.markdown(f"<span style='color:{change_color};'>({change_percentage:.2f}%)</span>", unsafe_allow_html=True)
+        
         ticker = st.text_input("", value=ticker)
 
         fig = plot_ticker(ticker, label, interval, period, chart_type)
