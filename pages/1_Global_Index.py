@@ -16,6 +16,7 @@ data = {
 df = pd.DataFrame(data)
 
 # Function to fetch stock index values
+@st.cache(ttl=60)  # Cache for 1 minute
 def fetch_index_values(tickers):
     values = []
     for ticker in tickers:
@@ -24,8 +25,8 @@ def fetch_index_values(tickers):
             current_value = ticker_data['Close'][-1]
             values.append(current_value)
         except Exception as e:
+            st.error(f"Error fetching data for {ticker}: {e}")
             values.append(None)  # Append None if there's an error
-            print(f"Error fetching data for {ticker}: {e}")
     return values
 
 # Fetch stock index values
