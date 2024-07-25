@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import yfinance as yf
-import folium
-from streamlit_folium import folium_static
+import plotly.express as px
 
 # Define the data
 data = {
@@ -33,20 +32,21 @@ def fetch_index_values(tickers):
 # Fetch stock index values
 df['Value'] = fetch_index_values(df['Index'])
 
-# Create a Folium map
-m = folium.Map(location=[20, 0], zoom_start=2)
+# Create a scatter map using Plotly
+fig = px.scatter_geo(df,
+                     lat='Latitude',
+                     lon='Longitude',
+                     hover_name='Country',
+                     hover_data={'Index': True, 'Value': True, 'Latitude': False, 'Longitude': False},
+                     projection='natural earth',
+                     title="Stock Exchanges Around the World")
 
-# Add markers to the map
-for _, row in df.iterrows():
-    folium.Marker(
-        location=[row['Latitude'], row['Longitude']],
-        popup=f"<b>{row['Country']}</b><br>Index: {row['Index']}<br>Value: {row['Value']}",
-        icon=folium.Icon(color='blue', icon='info-sign')
-    ).add_to(m)
+# Customize layout
+fig.update_layout(height=800, margin={"r":0,"t":0,"l":0,"b":0})
 
 # Display the map in Streamlit
 st.title("Stock Exchanges Around the World")
-folium_static(m)
+st.plotly_chart(fig, use_container_width=True)
 
 # Display DataFrame with additional information
 st.write("Stock Index Values:")
