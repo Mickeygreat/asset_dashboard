@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import yfinance as yf
+import folium
+from streamlit_folium import folium_static
 
 # Define the data
 data = {
@@ -31,12 +33,20 @@ def fetch_index_values(tickers):
 # Fetch stock index values
 df['Value'] = fetch_index_values(df['Index'])
 
-# Prepare data for map
-map_data = df[['Latitude', 'Longitude']].rename(columns={'Latitude': 'latitude', 'Longitude': 'longitude'})
+# Create a Folium map
+m = folium.Map(location=[20, 0], zoom_start=2)
 
-# Display map using Streamlit's st.map
+# Add markers to the map
+for _, row in df.iterrows():
+    folium.Marker(
+        location=[row['Latitude'], row['Longitude']],
+        popup=f"<b>{row['Country']}</b><br>Index: {row['Index']}<br>Value: {row['Value']}",
+        icon=folium.Icon(color='blue', icon='info-sign')
+    ).add_to(m)
+
+# Display the map in Streamlit
 st.title("Stock Exchanges Around the World")
-st.map(map_data)
+folium_static(m)
 
 # Display DataFrame with additional information
 st.write("Stock Index Values:")
