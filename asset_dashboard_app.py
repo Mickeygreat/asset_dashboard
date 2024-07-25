@@ -16,10 +16,10 @@ default_tickers = {
 }
 
 # Function to fetch and plot data
-def plot_ticker(ticker, label, interval, period, chart_type):
+def plot_ticker(ticker, label, interval, period, chart_type, up_color, down_color):
     data = yf.download(ticker, period=period, interval=interval)
     fig = go.Figure()
-    
+
     if chart_type == "Candles":
         fig.add_trace(go.Candlestick(
             x=data.index,
@@ -27,23 +27,25 @@ def plot_ticker(ticker, label, interval, period, chart_type):
             high=data['High'],
             low=data['Low'],
             close=data['Close'],
-            name=label
+            name=label,
+            increasing_line_color=up_color,
+            decreasing_line_color=down_color
         ))
     else:
         fig.add_trace(go.Scatter(
-            x=data.index, 
-            y=data['Close'], 
-            mode='lines', 
+            x=data.index,
+            y=data['Close'],
+            mode='lines',
             name=label
         ))
 
     fig.add_trace(go.Bar(
-        x=data.index, 
-        y=data['Volume'], 
-        name='Volume', 
+        x=data.index,
+        y=data['Volume'],
+        name='Volume',
         marker=dict(color='rgba(128, 128, 128, 0.5)')
     ))
-    
+
     fig.update_layout(
         title=f"{label} Price Chart",
         xaxis_title="Date",
@@ -53,7 +55,7 @@ def plot_ticker(ticker, label, interval, period, chart_type):
         barmode='relative'
     )
     fig.update_traces(yaxis='y2', selector=dict(type='bar'))
-    
+
     return fig
 
 # Function to get current price and change percentage
@@ -88,6 +90,13 @@ chart_type = st.radio(
     index=1  # Default to "Line" (index 1)
 )
 
+# Candlestick color selectors
+if chart_type == "Candles":
+    up_color = st.color_picker("Select color for upward candles", "#00ff00")
+    down_color = st.color_picker("Select color for downward candles", "#ff0000")
+else:
+    up_color = down_color = None
+
 # Create a grid layout for the dashboard
 cols = st.columns(2)
 index = 0
@@ -97,11 +106,12 @@ for label, ticker in default_tickers.items():
         current_price, change_percentage = get_current_price(ticker)
         change_color = "green" if change_percentage > 0 else "red"
 
-        st.markdown(f"### {label}: {current_price:.2f}")
-        st.markdown(f"### <span style='color:{change_color};'>({change_percentage:.2f}%)</span>", unsafe_allow_html=True)
-        
+        st.markdown(f"### {label}: ${current_price:.2f}")
+        st.markdown(
+            f"### <span style='color:{change_color};'>({change_percentage:.2f}%)</span>", unsafe_allow_html=True)
+
         ticker = st.text_input("", value=ticker)
 
-        fig = plot_ticker(ticker, label, interval, period, chart_type)
+        fig = plot_ticker(ticker, label, interval, period, chart_type, up_color, down_color)
         st.plotly_chart(fig, use_container_width=True)
     index += 1
