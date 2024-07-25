@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 import plotly.express as px
+import plotly.graph_objects as go
 
 # Define the data
 data = {
@@ -41,6 +42,21 @@ fig = px.scatter_geo(df,
                      projection='natural earth',
                      title="Stock Exchanges Around the World")
 
+# Add country names
+for i, row in df.iterrows():
+    fig.add_trace(go.Scattergeo(
+        lon=[row['Longitude']],
+        lat=[row['Latitude']],
+        text=row['Country'],
+        mode='text',
+        showlegend=False,
+        textposition="top center",
+        textfont=dict(
+            size=10,
+            color="black"
+        )
+    ))
+
 # Customize layout to match st.map style and make ocean blue
 fig.update_layout(
     height=800, 
@@ -54,13 +70,6 @@ fig.update_layout(
         countrycolor='rgb(204, 204, 204)',
         coastlinecolor='rgb(102, 102, 102)'
     )
-)
-
-# Add country names for all nations
-fig.update_geos(
-    showcountries=True,
-    countrycolor="Black",
-    countrywidth=0.5,
 )
 
 # Display the map in Streamlit
