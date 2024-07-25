@@ -86,7 +86,7 @@ period = st.selectbox(
 # Chart type selector
 chart_type = st.radio(
     "Select chart type for all charts",
-    options=["Candles", "Line"],
+    options=["Line", "Candles"],
     index=0  # Default to "Candles" (index 0)
 )
 
