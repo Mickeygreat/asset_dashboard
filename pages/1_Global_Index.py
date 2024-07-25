@@ -55,6 +55,11 @@ data = {
     'Value': [None] * 36  # Placeholder for index values
 }
 
+# Check lengths of lists
+lengths = [len(v) for v in data.values()]
+if len(set(lengths)) != 1:
+    raise ValueError("All lists in the 'data' dictionary must be of the same length.")
+
 # Convert to DataFrame
 df = pd.DataFrame(data)
 
