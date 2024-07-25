@@ -12,11 +12,11 @@ data = {
     'Value': [None] * 31  # Initialize with the same length as 'Country'  # Placeholder for index values
 }
 
-st.write(len(data['Country']))  # Should print 30
-st.write(len(data['Index']))    # Should print 30
-st.write(len(data['Latitude'])) # Should print 30
-st.write(len(data['Longitude'])) # Should print 30
-st.write(len(data['Value']))    # Should print 30
+# st.write(len(data['Country']))  # Should print 30
+# st.write(len(data['Index']))    # Should print 30
+# st.write(len(data['Latitude'])) # Should print 30
+# st.write(len(data['Longitude'])) # Should print 30
+# st.write(len(data['Value']))    # Should print 30
 
 # Convert to DataFrame
 df = pd.DataFrame(data)
