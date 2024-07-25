@@ -15,12 +15,10 @@ default_tickers = {
 }
 
 # Function to fetch and plot data
-
-
 def plot_ticker(ticker, label, interval, period, chart_type):
     data = yf.download(ticker, period=period, interval=interval)
     fig = go.Figure()
-
+    
     if chart_type == "Candles":
         fig.add_trace(go.Candlestick(
             x=data.index,
@@ -32,19 +30,19 @@ def plot_ticker(ticker, label, interval, period, chart_type):
         ))
     else:
         fig.add_trace(go.Scatter(
-            x=data.index,
-            y=data['Close'],
-            mode='lines',
+            x=data.index, 
+            y=data['Close'], 
+            mode='lines', 
             name=label
         ))
 
     fig.add_trace(go.Bar(
-        x=data.index,
-        y=data['Volume'],
-        name='Volume',
+        x=data.index, 
+        y=data['Volume'], 
+        name='Volume', 
         marker=dict(color='rgba(128, 128, 128, 0.5)')
     ))
-
+    
     fig.update_layout(
         title=f"{label} Price Chart",
         xaxis_title="Date",
@@ -54,21 +52,17 @@ def plot_ticker(ticker, label, interval, period, chart_type):
         barmode='relative'
     )
     fig.update_traces(yaxis='y2', selector=dict(type='bar'))
-
+    
     return fig
 
 # Function to get current price and change percentage
-
-
 def get_current_price(ticker):
     ticker_data = yf.Ticker(ticker)
     todays_data = ticker_data.history(period='1d')
     current_price = todays_data['Close'][0]
     previous_close = todays_data['Open'][0]
-    change_percentage = (
-        (current_price - previous_close) / previous_close) * 100
+    change_percentage = ((current_price - previous_close) / previous_close) * 100
     return current_price, change_percentage
-
 
 st.title("Financial Dashboard")
 
@@ -82,8 +76,7 @@ interval = st.selectbox(
 # Global period selector
 period = st.selectbox(
     "Select period for all charts",
-    options=["1d", "5d", "1mo", "3mo", "6mo",
-             "1y", "2y", "5y", "10y", "ytd", "max"],
+    options=["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"],
     index=2
 )
 
@@ -91,7 +84,7 @@ period = st.selectbox(
 chart_type = st.radio(
     "Select chart type for all charts",
     options=["Candles", "Line"],
-    index=0
+    index=1  # Default to "Line" (index 1)
 )
 
 # Create a grid layout for the dashboard
