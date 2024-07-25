@@ -1,8 +1,8 @@
 import streamlit as st
-import yfinance as yf
+import plotly.express as px
 import pandas as pd
 
-# Define tickers and their respective coordinates (latitude and longitude)
+# Define the data
 data = {
     'Country': ['United States', 'China', 'Japan', 'Germany', 'United Kingdom'],
     'Index': ['^GSPC', '000001.SS', '^N225', '^GDAXI', '^FTSE'],
@@ -27,8 +27,26 @@ def fetch_index_values(tickers):
 # Fetch stock index values
 fetch_index_values(df['Index'])
 
-# Display DataFrame with fetched values
-st.write(df)
+# Plot map using Plotly
+st.title("Interactive Global Stock Exchanges Map")
 
-# Plot map
-st.map(df[['Latitude', 'Longitude']])
+# Mapbox token (replace with your own token)
+mapbox_token = 'your_mapbox_token_here'
+
+fig = px.scatter_mapbox(
+    df,
+    lat='Latitude',
+    lon='Longitude',
+    hover_name='Country',
+    hover_data={'Index': True, 'Value': True},
+    size_max=15,
+    zoom=1,
+    title="Stock Exchanges Around the World",
+    color_discrete_sequence=["blue"],
+)
+
+fig.update_layout(mapbox_style="open-street-map")
+fig.update_layout(mapbox=dict(accesstoken=mapbox_token))
+
+# Make map full-screen
+st.write(fig)
