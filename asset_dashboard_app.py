@@ -87,7 +87,7 @@ period = st.selectbox(
 chart_type = st.radio(
     "Select chart type for all charts",
     options=["Line", "Candles"],
-    index=0  # Default to "Candles" (index 0)
+    index=0  # Default to "Line" (index 0)
 )
 
 # Candlestick color selectors
@@ -107,10 +107,13 @@ for label, ticker in default_tickers.items():
         change_color = "green" if change_percentage > 0 else "red"
 
         # Check if ticker starts with '^' and format price display accordingly
-        price_display = f"${current_price:.2f}"
-        if ticker.startswith('^'):
-            price_display = f"{current_price:.2f}"
-        
+        if label == "10 Year T Bond Yield":
+            price_display = f"{current_price:.2f}%"
+        else:
+            price_display = f"${current_price:.2f}"
+            if ticker.startswith('^'):
+                price_display = f"{current_price:.2f}"
+
         st.markdown(f"### {label}: {price_display}")
         st.markdown(
             f"### <span style='color:{change_color};'>({change_percentage:.2f}%)</span>", unsafe_allow_html=True)
