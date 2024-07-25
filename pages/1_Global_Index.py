@@ -58,7 +58,7 @@ fig.add_trace(go.Scattergeo(
 ))
 
 # adding some padding or spacing between the text elements to prevent them from overlapping
-text=df['Country'] + '<br><br>Index: ' + df['Index'] + '<br><br>Value: ' + df['Value'].astype(str)
+# text=df['Country'] + '<br><br>Index: ' + df['Index'] + '<br><br>Value: ' + df['Value'].astype(str)
 
 # Set globe projection and layout settings
 fig.update_geos(
