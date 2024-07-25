@@ -53,8 +53,10 @@ fig.add_trace(go.Scattergeo(
     textfont=dict(
         color='black',
         family='Arial',
-        size=12
-    )
+        size=18,  # Increased font size
+        weight='bold'  # Made font bold
+    ),
+    textposition='middle center'  # Adjusted text position
 ))
 
 # adding some padding or spacing between the text elements to prevent them from overlapping
