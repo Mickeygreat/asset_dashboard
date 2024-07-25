@@ -41,8 +41,20 @@ fig = px.scatter_geo(df,
                      projection='natural earth',
                      title="Stock Exchanges Around the World")
 
-# Customize layout
-fig.update_layout(height=800, margin={"r":0,"t":0,"l":0,"b":0})
+# Customize layout to match st.map style
+fig.update_layout(
+    height=800, 
+    margin={"r":0,"t":0,"l":0,"b":0},
+    geo=dict(
+        landcolor='rgb(217, 217, 217)',
+        oceancolor='rgb(204, 204, 255)',
+        showland=True,
+        showocean=True,
+        showcountries=True,
+        countrycolor='rgb(204, 204, 204)',
+        coastlinecolor='rgb(102, 102, 102)'
+    )
+)
 
 # Display the map in Streamlit
 st.title("Stock Exchanges Around the World")
