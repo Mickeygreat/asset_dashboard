@@ -43,7 +43,6 @@ st.title("Interactive Globe View of Stock Exchanges")
 
 fig = go.Figure()
 
-# Add scattergeo trace for the globe view
 fig.add_trace(go.Scattergeo(
     lon=df['Longitude'],
     lat=df['Latitude'],
@@ -51,8 +50,15 @@ fig.add_trace(go.Scattergeo(
     mode='markers+text',
     marker=dict(size=10, color='blue', opacity=0.8),
     textposition='top center',
-    textfont=dict(color='black')  # Changed font color to white
+    textfont=dict(
+        color='black',  # Font color
+        family='Arial',  # Font family
+        size=12  # Font size
+    )
 ))
+
+# adding some padding or spacing between the text elements to prevent them from overlapping
+text=df['Country'] + '<br><br>Index: ' + df['Index'] + '<br><br>Value: ' + df['Value'].astype(str)
 
 # Set globe projection and layout settings
 fig.update_geos(
