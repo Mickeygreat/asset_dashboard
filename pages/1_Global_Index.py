@@ -27,7 +27,7 @@ tickers = {
 # Fetch data
 df = fetch_index_data(tickers)
 
-# Create a choropleth map
+# Create an interactive choropleth map
 fig = px.choropleth(
     df,
     locations="Country",
@@ -35,7 +35,19 @@ fig = px.choropleth(
     color="Value",
     hover_name="Index",
     color_continuous_scale=px.colors.sequential.Plasma,
-    title="Stock Exchange Indices by Country"
+    title="Stock Exchange Indices by Country",
+    labels={'Value': 'Index Value'}
+)
+
+# Add some interactivity
+fig.update_geos(
+    projection_type="natural earth",
+    showcoastlines=True,
+    coastlinecolor="Black",
+    showland=True,
+    landcolor="LightGray",
+    showocean=True,
+    oceancolor="LightBlue"
 )
 
 # Streamlit app
