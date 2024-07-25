@@ -32,7 +32,7 @@ def fetch_index_values(tickers):
 df['Value'] = fetch_index_values(df['Index'])
 
 # Prepare data for map
-map_data = df[['Latitude', 'Longitude']]
+map_data = df[['Latitude', 'Longitude']].rename(columns={'Latitude': 'latitude', 'Longitude': 'longitude'})
 
 # Display map using Streamlit's st.map
 st.title("Stock Exchanges Around the World")
