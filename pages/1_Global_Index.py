@@ -46,14 +46,14 @@ fig = go.Figure()
 fig.add_trace(go.Scattergeo(
     lon=df['Longitude'],
     lat=df['Latitude'],
-    text=df['Country'] + '<br>Index: ' + df['Index'] + '<br>Value: ' + df['Value'].astype(str),
-    mode='markers+text',
-    marker=dict(size=10, color='blue', opacity=0.8),
-    textposition='top center',
+    text=df['Country'],
+    mode='text',
+    hoverinfo='text',
+    hovertext=df['Index'] + '<br>Value: ' + df['Value'].astype(str),
     textfont=dict(
-        color='black',  # Font color
-        family='Arial',  # Font family
-        size=12  # Font size
+        color='black',
+        family='Arial',
+        size=12
     )
 ))
 
