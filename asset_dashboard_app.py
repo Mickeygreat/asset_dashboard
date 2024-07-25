@@ -7,6 +7,7 @@ default_tickers = {
     "Bitcoin": "BTC-USD",
     "Ethereum": "ETH-USD",
     "Dow Jones": "^DJI",
+    "Russell 2000": "^RUT",
     "NASDAQ": "^IXIC",
     "S&P 500": "^GSPC",
     "Gold Futures": "GC=F",
